@@ -6,11 +6,12 @@ DROP TABLE IF EXISTS employee;
 CREATE TABLE department (
     id INT  -- id param (departments.id) --
     AUTO_INCREMENT PRIMARY KEY, -- id given primary key attribute and auto-increment field attribute --
-    name VARCHAR(30) NOT NULL -- name param (departments.name) --
+    department_name VARCHAR(30) NOT NULL -- name param (departments.name) --
 );
 
 -- to see departments table --
 SELECT * FROM employee_tracker_db.department;
+SELECT * FROM department; -- see all departments --
 
 CREATE TABLE role (
     id INT
