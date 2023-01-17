@@ -2,7 +2,10 @@
 
 const express = require('express');
 
-const db = require('./config/connection.js');
+//* from connection.js
+const mysql = require('mysql2');
+
+//const db = require('./config/connection.js');
 
 //* import models with prompts to then start data tables based on input
 //const mainMenu = require('./lib/prompt.js');
@@ -20,15 +23,30 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-
-app.use((req, res) => {
-    res.status(404).end();
-});
+//* from connection.js
+const db = mysql.createConnection(
+    {
+        host: 'kaylacasale', //* your user name
+        user: 'root',
+        password: 'iamacoder',
+        database: 'employee_tracker_db', //* name of database you want to connect to
+    },
+    console.log(`Connected to the employee_tracker_db database.`)
+);
 
 db.connect(err => {
-    if (err) throw err;
+    if (err) {
+        console.error(err)
+    }
     app.listen(PORT, () => { });
 });
+
+// app.use((req, res) => {
+//     res.status(404).end();
+// });
+
+
+
 
 //* from prompt.js
 function startPrompt() {
@@ -68,14 +86,15 @@ function startPrompt() {
         })
 };
 
-function viewAllDepartments() {
-    db.query('SELECT * FROM department', function (err, results) {
-        if (err) {
-            console.log(err)
-        }
-        console.table(results)
-    })
-}
+// function viewAllDepartments() {
+//     db.query('SELECT * FROM department', function (err, results) {
+//         if (err) {
+//             console.log(err)
+//             return
+//         }
+//         console.table(results)
+//     })
+// }
 
 
 startPrompt()
@@ -85,3 +104,10 @@ startPrompt()
 // app.listen(PORT, () => {
 //     console.log(`Server running on port ${PORT}`);
 // });
+app.use((req, res) => {
+    res.status(404).end();
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
